@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tabulator-container {
+  margin: 20px;
+
+}
+
+.selected-cell {
+  background-color: lightblue;
+  color: white;
+}
+
+.tabulator-col-sorter-element {
+  position: relative;
+}
+
+.tabulator-edit-list.tabulator-popup-container {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.tabulator-edit-list.tabulator-popup-container .tabulator-edit-list-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.tabulator-edit-list.tabulator-popup-container .tabulator-edit-list-item:hover {
+  background-color: lightgray;
+}
