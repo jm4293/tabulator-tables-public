@@ -32,7 +32,7 @@ interface colorOptionInterface {
 // interface 정의 끝
 
 // defaultData, genderOptions, colorOptions, defaultColumns, options 정의 시작
-const defaultData: dataInterface[] = Array.from({ length: 100000 }, (_, i) => ({
+const defaultData: dataInterface[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   name: `Billy Bob ${i + 1}`,
   age: 12 + i,
@@ -87,8 +87,15 @@ const defaultColumns: ColumnDefinition[] = [
     field: "age",
     // sorter: "number",
     hozAlign: "right",
-    // formatter: "progress",
     editor: true,
+    formatter: "money",
+    formatterParams: {
+      symbol: "₩",
+      thousand: ",",
+      precision: false,
+      decimal: ".",
+      symbolAfter: true,
+    },
   },
   {
     title: "Gender",
@@ -146,7 +153,7 @@ const defaultColumns: ColumnDefinition[] = [
         type: "date",
         max: "9999-12-31",
       },
-      mask: "yyyy-mm-dd",
+      mask: "yyyy-MM-dd",
     },
   },
   {
@@ -162,9 +169,9 @@ const options: ReactTabulatorOptions = {
   // height: 300,
   movableRows: true,
   movableColumns: true,
-  pagination: true,
-  paginationSize: 10,
-  paginationSizeSelector: [10, 20, 30],
+  // pagination: true,
+  // paginationSize: 10,
+  // paginationSizeSelector: [10, 20, 30],
 };
 // defaultData, genderOptions, colorOptions, defaultColumns, options 정의 끝
 
@@ -206,20 +213,19 @@ function App() {
     const fieldName = cell.getField();
     const newValue = cell.getValue();
 
-    console.log("newValue", newValue);
-
-    if (fieldName === "height") {
-      if (+newValue > 200) {
-        cell.setValue(200);
-      }
-    } else if (fieldName === "dob") {
-      const date = new Date(newValue);
-      if (isNaN(date.getTime())) {
-        cell.setValue("0000-00-00");
-      }
-    } else {
-      cell.setValue(newValue);
-    }
+    // if (fieldName === "height") {
+    //   if (+newValue > 200) {
+    //     cell.setValue(200);
+    //   }
+    // } else if (fieldName === "dob") {
+    //   const date = new Date(newValue);
+    //
+    //   if (isNaN(date.getTime())) {
+    //     cell.setValue("0000-00-00");
+    //   }
+    // } else {
+    //   cell.setValue(newValue);
+    // }
   };
 
   return (
