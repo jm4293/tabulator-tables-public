@@ -8,7 +8,8 @@ import {
   ReactTabulatorOptions,
 } from "react-tabulator";
 
-interface interfaceData {
+// interface 정의 시작
+interface dataInterface {
   id: number;
   name: string;
   age: number;
@@ -19,7 +20,19 @@ interface interfaceData {
   cheese?: boolean;
 }
 
-const defaultData: interfaceData[] = Array.from({ length: 100 }, (_, i) => ({
+interface genderOptionInterface {
+  label: string;
+  value: string;
+}
+
+interface colorOptionInterface {
+  label: string;
+  value: string;
+}
+// interface 정의 끝
+
+// defaultData, genderOptions, colorOptions, defaultColumns, options 정의 시작
+const defaultData: dataInterface[] = Array.from({ length: 100000 }, (_, i) => ({
   id: i + 1,
   name: `Billy Bob ${i + 1}`,
   age: 12 + i,
@@ -37,12 +50,12 @@ const defaultData: interfaceData[] = Array.from({ length: 100 }, (_, i) => ({
   cheese: i % 2 === 0,
 }));
 
-const genderOptions = [
+const genderOptions: genderOptionInterface[] = [
   { label: "남자", value: "남자" },
   { label: "여자", value: "여자" },
 ];
 
-const colorOptions = [
+const colorOptions: colorOptionInterface[] = [
   { label: "Red", value: "red" },
   { label: "Green", value: "green" },
   { label: "Blue", value: "blue" },
@@ -133,6 +146,7 @@ const defaultColumns: ColumnDefinition[] = [
         type: "date",
         max: "9999-12-31",
       },
+      mask: "yyyy-mm-dd",
     },
   },
   {
@@ -148,18 +162,19 @@ const options: ReactTabulatorOptions = {
   // height: 300,
   movableRows: true,
   movableColumns: true,
-  // pagination: true,
-  // paginationSize: 10,
-  // paginationSizeSelector: [10, 20, 30],
+  pagination: true,
+  paginationSize: 10,
+  paginationSizeSelector: [10, 20, 30],
 };
+// defaultData, genderOptions, colorOptions, defaultColumns, options 정의 끝
 
 function App() {
   let tableRef = useRef<any>();
 
-  const [data, setData] = useState<interfaceData[]>(defaultData);
+  const [data, setData] = useState<dataInterface[]>(defaultData);
 
   const btn_onClick_row_add = () => {
-    const newRow: interfaceData = {
+    const newRow: dataInterface = {
       id: data.length + 1,
       name: "",
       age: 0,
@@ -191,23 +206,21 @@ function App() {
     const fieldName = cell.getField();
     const newValue = cell.getValue();
 
-    console.log("newValue",newValue)
+    console.log("newValue", newValue);
 
     if (fieldName === "height") {
       if (+newValue > 200) {
         cell.setValue(200);
       }
-    } else if(fieldName === "dob") {
-        const date = new Date(newValue);
-        if (isNaN(date.getTime())) {
-            cell.setValue("0000-00-00");
-        }
+    } else if (fieldName === "dob") {
+      const date = new Date(newValue);
+      if (isNaN(date.getTime())) {
+        cell.setValue("0000-00-00");
+      }
     } else {
       cell.setValue(newValue);
     }
   };
-
-  console.log("data", data);
 
   return (
     <div className="tabulator-container">
@@ -234,6 +247,10 @@ function App() {
           cellEdit: (cell: any) => {},
           rowSelected: (row: any) => {},
           rowDeselected: (row: any) => {},
+          rowAdded: (row: any) => {},
+          rowDeleted: (row: any) => {},
+          rowMoved: (row: any) => {},
+          rowSelectionChanged: (data: any) => {},
         }}
         footerElement={<span>Footer || </span>}
       />
