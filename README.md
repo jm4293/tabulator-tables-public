@@ -1,18 +1,18 @@
 # React-tabulator 사용설명서
 
-## npm install
+## 1. npm install
    * npm install react-tabulator tabulator-tables
 
-## version
+## 2. version
    * "react-tabulator": "^0.19.0"
    * "tabulator-tables": "^6.0.1"
 
-## import
+## 3. import
    * import "react-tabulator/lib/styles.css”;
    * import "react-tabulator/lib/css/tabulator.min.css";
    * import { ColumnDefinition, ReactTabulator, ReactTabulatorOptions } from "react-tabulator";
 
-## ref
+## 4. ref
    * tableRef는 React의 useRef훅을 사용하여 테이블 컴포넌트를 참조하는 변수
    * tableRef.current를 사용하여 ReactTabulator 컴포넌트의 인스턴스에 접근하고, getSelectedData() 메서드를 호출하여 선택된 행의 데이터를 가져온다.
 
@@ -29,7 +29,7 @@ const selectedData = tableRef.current.getSelectedData();
 };
 ```
 
-## return
+## 5. return
 ```js
 <ReactTabulator
 onRef={(ref) => (tableRef = ref)}
@@ -44,7 +44,7 @@ footerElement={<span>Footer || </span>}
 />
 ```
 
-## columns
+## 5.1. columns
    * 테이블의 열을 정의하는 객체의 배열
 
    1. title: 열의 제목을 나타내는 문자열
@@ -138,10 +138,10 @@ footerElement={<span>Footer || </span>}
    1. formatter: 열의 형식 지정
    1. formatterParams: 포맷터의 속성을 정의하는 객체
 
-## data
+## 5.2. data
    * 테이블에 표시될 데이터를 제공하는 배열
 
-## options
+## 5.3. options
    * 테이블의 열을 정의하는 객체의 배열
 
    1. movableRows: 테이블에서 행을 드래그하여 이동할 수 있는지 여부 설정
@@ -154,7 +154,7 @@ footerElement={<span>Footer || </span>}
    1. rowClick: 사용자가 행을 클릭했을 때 실행될 콜백 함수
    1. cellClick: 사용자가 셀을 클릭했을 때 실행될 콜백 함수
 
-## events
+## 5.4. events
    * ReactTabulator 컴포넌트에서 발생하는 다양한 이벤트에 대한 처리 함수들을 정의
 
    1. rowClick: 테이블의 행을 클릭할 때 발생하는 이벤트
@@ -176,6 +176,6 @@ footerElement={<span>Footer || </span>}
    1. rowMoved: 행이 이동될 때 발생하는 이벤트
    1. rowSelectionchanged: 행 선택이 변경될 때 발생하는 이벤트
 
-## footerElement
+## 6. footerElement
    * 테이블 하단에 표시될 커스텀 요소를 정의
 
