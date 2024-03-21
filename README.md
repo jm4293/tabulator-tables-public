@@ -1,287 +1,102 @@
-# ReactTabulator
+# React-tabulator 사용설명서
 
-### npm install
+## npm install
+   * npm install react-tabulator tabulator-tables
 
-```bash
-npm i react-tabulator tabulator-tables
-#npm i luxon // datatime 사용할 때 필요한 라이브러리
-#npm i -D @types/luxon // datatime 사용할 때 필요한 라이브러리
-```
+## version
+   * "react-tabulator": "^0.19.0"
+   * "tabulator-tables": "^6.0.1"
 
-### ReactTabulator 사용법
+## import
+   * import "react-tabulator/lib/styles.css”;
+   * import "react-tabulator/lib/css/tabulator.min.css";
+   * import { ColumnDefinition, ReactTabulator, ReactTabulatorOptions } from "react-tabulator";
 
-* columns: 이는 테이블의 열을 정의하는 객체의 배열입니다. 각 객체는 title, field, width, hozAlign, formatter 등의 속성을 가질 수 있습니다.
-   * title: 열의 제목을 나타내는 문자열입니다.
-   * field: 열의 데이터를 나타내는 문자열입니다. 이 속성은 데이터 배열의 요소들과 매핑됩니다.
-   * width: 열의 너비를 나타내는 숫자입니다.
-   * hozAlign: 열의 텍스트 정렬을 나타내는 문자열입니다. "left", "center", "right" 등의 값을 가질 수 있습니다.
-   * formatter: 열의 데이터를 포맷하는 문자열입니다. "progress", "star", "tickCross" 등의 값을 가질 수 있습니다.
-   * editable: 이 속성은 열의 셀을 편집할 수 있는지 여부를 나타내는 불리언입니다.
-   * editor: 이 속성은 셀을 편집할 때 사용할 에디터를 나타내는 문자열입니다. "input", "textarea", "number", "autocomplete", "tickCross", "star" 등의 값을 가질 수 있습니다.
-   * editorParams: 이 속성은 에디터의 속성을 정의하는 객체입니다. 에디터에 따라 다양한 속성을 가질 수 있습니다.
-   * elementAttributes: 이 속성은 에디터의 요소에 추가할 속성을 정의하는 객체입니다. "maxlength", "placeholder" 등의 값을 가질 수 있습니다.
-   * mask: 이 속성은 에디터의 입력을 마스킹하는 문자열입니다. "AAA-999", "999-999-9999" 등의 값을 가질 수 있습니다.
-   * selectContents: 이 속성은 에디터의 내용을 선택하는지 여부를 나타내는 불리언입니다.
-   * verticalNavigation: 이 속성은 에디터의 수직 방향 탐색을 나타내는 문자열입니다. "editor", "table", "hybrid" 등의 값을 가질 수 있습니다.
-   * shiftEnterSubmit: 이 속성은 셀의 내용을 편집한 후 Shift+Enter 키를 눌러 셀의 내용을 제출할지 여부를 나타내는 불리언입니다.
-   * formatterParams: 이 속성은 포맷터의 속성을 정의하는 객체입니다. 포맷터에 따라 다양한 속성을 가질 수 있습니다.
+## ref
+   * tableRef는 React의 useRef훅을 사용하여 테이블 컴포넌트를 참조하는 변수
+   * tableRef.current를 사용하여 ReactTabulator 컴포넌트의 인스턴스에 접근하고, getSelectedData() 메서드를 호출하여 선택된 행의 데이터를 가져온다.
 
 ```js
-const columns: ColumnDefinition[] = [
-    {
-        title: "Name",
-        field: "name",
-        width: 150,
-        editable: true,
-        editor: "input",
-        editorParams: {
-            search: true,
-            // mask: "AAA-999",
-            // selectContents: true,
-            elementAttributes: {
-                maxlength: "10", //set the maximum character length of the input element to 10 characters
-            },
-        },
-    },
-    {
-        title: "Age",
-        field: "age",
-        hozAlign: "left",
-        editable: true,
-        editor: "textarea",
-        editorParams: {
-            elementAttributes: {
-                // maxlength: "10", //set the maximum character length of the textarea element to 10 characters
-            },
-            // mask: "AAA-999",
-            // selectContents: true,
-            verticalNavigation: "editor", //navigate cursor around text area without leaving the cell
-            // shiftEnterSubmit: true, //submit cell value on shift enter
-        },
-    },
-    { title: "Favourite Color", field: "col", editable: true, editor: "input" },
-    {
-        title: "Date Of Birth",
-        field: "dob",
-        // hozAlign: "center",
-        // editable: true,
-        // editor: DateEditor,
-        // editorParams: { format: "MM/DD/YYYY" },
-    },
-    {
-        title: "Rating",
-        field: "rating",
-        hozAlign: "center",
-        formatter: "star",
-        editable: true,
-    },
-    {
-        title: "Passed?",
-        field: "passed",
-        hozAlign: "center",
-        formatter: "tickCross",
-        editable: true,
-    },
-];
+let tableRef = useRef<any>();
+
+const btn_onClick_row_remove = () => {
+const selectedData = tableRef.current.getSelectedData();
+
+	if (selectedData.length === 0) {
+		alert("선택된 row가 없습니다.");
+		return;
+	}
+};
 ```
 
-* data: 이 속성은 테이블에 표시될 데이터 배열입니다. 각 요소는 테이블의 한 행을 나타냅니다. 데이터 배열의 요소들은 컬럼 정의에서 지정한 필드 이름에 따라 해당 열에 매핑됩니다.
-   * id: 각 행의 고유한 식별자를 나타내는 숫자입니다.
-   * name: 각 행의 이름을 나타내는 문자열입니다.
-   * age: 각 행의 나이를 나타내는 문자열입니다.
-   * col: 각 행의 색을 나타내는 문자열입니다.
-   * dob: 각 행의 생년월일을 나타내는 문자열입니다.
-   * rating: 각 행의 평가를 나타내는 숫자입니다.
-   * passed: 각 행의 통과 여부를 나타내는 불리언입니다.
-
+## return
 ```js
-const data = [
-    {
-      id: 1,
-      name: "Oli Bob",
-      age: "12",
-      col: "red",
-      dob: "1" + "" + "1/11/1911",
-    },
-    { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-    {
-      id: 3,
-      name: "Christine Lobowski",
-      age: "42",
-      col: "green",
-      dob: "22/05/1982",
-    },
-    {
-      id: 4,
-      name: "Brendon Philips",
-      age: "125",
-      col: "orange",
-      dob: "01/08/1980",
-    },
-    {
-      id: 5,
-      name: "Margret Marmajuke",
-      age: "16",
-      col: "yellow",
-      dob: "31/01/1999",
-    },
-  ];
+<ReactTabulator
+onRef={(ref) => (tableRef = ref)}
+columns={defaultColumns}
+data={data}
+options={options}
+events={{
+rowClick: (e: any, row: any) => {},
+....
+}}
+footerElement={<span>Footer || </span>}
+/>
 ```
 
-[//]: # (* layout: 이는 테이블의 레이아웃을 정의하는 문자열입니다. "fitColumns", "fitData", "fitDataFill", "fitDataStretch" 등의 값을 가질 수 있습니다.)
-
-[//]: # (* tooltips: 각 셀에 표시될 툴팁을 커스터마이즈합니다.)
-
-[//]: # (* cellClick: 셀을 클릭했을 때 실행할 콜백 함수를 지정합니다.)
-
-[//]: # (* rowClick: 행을 클릭했을 때 실행할 콜백 함수를 지정합니다.ㄴ)
-
-[//]: # (* rowSelected: 행을 선택했을 때 실행할 콜백 함수를 지정합니다.)
-
-[//]: # (* rowDeselected: 행의 선택을 취소했을 때 실행할 콜백 함수를 지정합니다.)
-
-[//]: # (* cellEditing: 셀의 편집이 시작될 때 실행할 콜백 함수를 지정합니다.)
-
-[//]: # (* cellEdited: 셀의 내용이 편집되었을 때 실행할 콜백 함수를 지정합니다.)
-
-
-[//]: # (```js)
-
-[//]: # (import React from "react";)
-
-[//]: # (import "./App.css";)
-
-[//]: # (import "react-tabulator/lib/styles.css";)
-
-[//]: # (import "react-tabulator/lib/css/tabulator.min.css";)
-
-[//]: # (import { ColumnDefinition, ReactTabulator } from "react-tabulator";)
-
-[//]: # ()
-[//]: # (function App&#40;&#41; {)
-
-[//]: # (  const columns: ColumnDefinition[] = [)
-
-[//]: # (    { title: "Name", field: "name", width: 150 },)
-
-[//]: # (    {)
-
-[//]: # (      title: "Age",)
-
-[//]: # (      field: "age",)
-
-[//]: # (      hozAlign: "left",)
-
-[//]: # (      formatter: "progress",)
-
-[//]: # (    },)
-
-[//]: # (    { title: "Favourite Color", field: "col" },)
-
-[//]: # (    {)
-
-[//]: # (      title: "Date Of Birth",)
-
-[//]: # (      field: "dob",)
-
-[//]: # (      hozAlign: "center",)
-
-[//]: # (    },)
-
-[//]: # (    {)
-
-[//]: # (      title: "Rating",)
-
-[//]: # (      field: "rating",)
-
-[//]: # (      hozAlign: "center",)
-
-[//]: # (      formatter: "star",)
-
-[//]: # (    },)
-
-[//]: # (    {)
-
-[//]: # (      title: "Passed?",)
-
-[//]: # (      field: "passed",)
-
-[//]: # (      hozAlign: "center",)
-
-[//]: # (      formatter: "tickCross",)
-
-[//]: # (    },)
-
-[//]: # (  ];)
-
-[//]: # ()
-[//]: # (  const data = [)
-
-[//]: # (    { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },)
-
-[//]: # (    { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },)
-
-[//]: # (    {)
-
-[//]: # (      id: 3,)
-
-[//]: # (      name: "Christine Lobowski",)
-
-[//]: # (      age: "42",)
-
-[//]: # (      col: "green",)
-
-[//]: # (      dob: "22/05/1982",)
-
-[//]: # (    },)
-
-[//]: # (    {)
-
-[//]: # (      id: 4,)
-
-[//]: # (      name: "Brendon Philips",)
-
-[//]: # (      age: "125",)
-
-[//]: # (      col: "orange",)
-
-[//]: # (      dob: "01/08/1980",)
-
-[//]: # (    },)
-
-[//]: # (    {)
-
-[//]: # (      id: 5,)
-
-[//]: # (      name: "Margret Marmajuke",)
-
-[//]: # (      age: "16",)
-
-[//]: # (      col: "yellow",)
-
-[//]: # (      dob: "31/01/1999",)
-
-[//]: # (    },)
-
-[//]: # (  ];)
-
-[//]: # ()
-[//]: # (  return &#40;)
-
-[//]: # (    <div className="tabulator-container">)
-
-[//]: # (      <ReactTabulator columns={columns} data={data} layout="fitdata" />)
-
-[//]: # (    </div>)
-
-[//]: # (  &#41;;)
-
-[//]: # (})
-
-[//]: # ()
-[//]: # (export default App;)
-
-[//]: # (```)
-
-
+## columns
+   * 테이블의 열을 정의하는 객체의 배열
+
+   1. title: 열의 제목을 나타내는 문자열
+   1. field: 열의 데이터를 나타내는 문자열
+   1. width: 열의 너비를 나타내는 숫자
+   1. hozAlign: 열의 텍스트 정렬을 나타내는 문자열
+   1. formatter: 열의 데이터를 포맷하는 문자열
+   1. editor: 열의 편집여부를 표현 “true”, “false”, "input", "textarea", "number", "autocomplete", "tickCross", "star" 등
+   1. editorParams: 에디터의 속성을 정의하는 객체
+      *	elementAttributes: 이 속성은 에디터의 요소에 추가할 속성을 정의하는 객체.
+      *	mask: 에디터의 입력을 마스킹하는 문자열 "AAA-999", "999-999-9999" 등
+   1. formatter: 열의 형식 지정
+   1. formatterParams: 포맷터의 속성을 정의하는 객체
+
+## data
+   * 테이블에 표시될 데이터를 제공하는 배열
+
+## options
+   * 테이블의 열을 정의하는 객체의 배열
+
+   1. movableRows: 테이블에서 행을 드래그하여 이동할 수 있는지 여부 설정
+   1. movableColumns: 테이블에서 열을 드래그하여 이동할 수 있는지 여부 설정
+   1. pagination: 페이지네이션 활성와 여부 설정
+   1. paginationSize: 페이지 당 표시할 행의 수
+   1. paginationSizeSelector: 사용자가 선택할 수 있는 페이지 크기를 나타내는 배열
+   1. height: 테이블 높이를 설정
+   1. tooltips: 테이블 셀에 마우스를 가져가면 표시되는 툴팁 사용 여부
+   1. rowClick: 사용자가 행을 클릭했을 때 실행될 콜백 함수
+   1. cellClick: 사용자가 셀을 클릭했을 때 실행될 콜백 함수
+
+## events
+   * ReactTabulator 컴포넌트에서 발생하는 다양한 이벤트에 대한 처리 함수들을 정의
+
+   1. rowClick: 테이블의 행을 클릭할 때 발생하는 이벤트
+   1. rowUpdated: 테이블의 행이 업데이트될 때 발생하는 이벤트
+   1. cellClick: 테이블의 셀을 클릭할 때 발생하는 이벤트
+   1. dataLoading: 데이터가 테이블에 로드되기 전에 발생하는 이벤트
+   1. dataLoaded: 데이터가 테이블에 로드된 후에 발생하는 이벤트
+   1. dataProcessing: 데이터가 처리되기 전에 발생하는 이벤트
+   1. dataProcessed: 데이터가 처리된 후에 발생하는 이벤트
+   1. dataChanged: 테이블의 데이터가 변경될 때 발생하는 이벤트
+   1. cellEditng: 셀 편집이 시작될 때 발생하는 이벤트
+   1. cellEditCancelled: 셀 편집이 취소될 때 발생하는 이벤트
+   1. cellEdited: 셀 편집이 완료된 후 발생하는 이벤트
+   1. cellEdit: 셀 편집이 발생할 때 발생하는 이벤트
+   1. rowSelected: 행이 선택될 때 발생하는 이벤트
+   1. rowDeselected: 행이 선택 해제될 때 발생하는 이벤트
+   1. rowAdded: 행이 추가될 때 발생하는 이벤트
+   1. rowDeleted: 행이 삭제될 때 발생하는 이벤트
+   1. rowMoved: 행이 이동될 때 발생하는 이벤트
+   1. rowSelectionchanged: 행 선택이 변경될 때 발생하는 이벤트
+
+## footerElement
+   * 테이블 하단에 표시될 커스텀 요소를 정의
 

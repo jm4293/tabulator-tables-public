@@ -10,7 +10,6 @@
     "@types/node": "^16.18.88",
     "@types/react": "^18.2.65",
     "@types/react-dom": "^18.2.21",
-    "luxon": "^3.4.4",
     "react": "^18.2.0",
     "react-datasheet": "^1.4.12",
     "react-dom": "^18.2.0",
@@ -43,8 +42,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/luxon": "^3.4.2"
   }
 }
