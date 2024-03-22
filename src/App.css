@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+input, select {
+  cursor: pointer;
+}
+
 .tabulator-container {
   margin: 20px;
 

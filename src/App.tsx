@@ -7,6 +7,7 @@ import {
   ReactTabulator,
   ReactTabulatorOptions,
 } from "react-tabulator";
+import { DateTime } from "luxon";
 
 // interface 정의 시작
 interface dataInterface {
@@ -34,7 +35,7 @@ interface colorOptionInterface {
 // defaultData, genderOptions, colorOptions, defaultColumns, options 정의 시작
 const defaultData: dataInterface[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
-  name: `Billy Bob ${i + 1}`,
+  name: `Billy Bob ${i + 1 + Math.random() * 1000}`,
   age: 12 + i,
   gender: i % 2 === 0 ? "남자" : "여자",
   height: 95 + i,
@@ -68,9 +69,6 @@ const defaultColumns: ColumnDefinition[] = [
     field: "select",
     formatter: "rowSelection",
     headerSort: false,
-    cellClick: (e, cell) => {
-      cell.getRow().toggleSelect();
-    },
     hozAlign: "center",
     width: 50,
   },
@@ -94,7 +92,7 @@ const defaultColumns: ColumnDefinition[] = [
       thousand: ",",
       precision: false,
       decimal: ".",
-      symbolAfter: true,
+      symbolAfter: false,
     },
   },
   {
@@ -209,23 +207,52 @@ function App() {
     setData(newData.sort((a, b) => a.id - b.id));
   };
 
+  const handleCellClicked = (e: any, cell: any) => {
+    const fieldName = cell.getField();
+
+    if (fieldName === "select") {
+      cell.getRow().toggleSelect();
+    }
+  };
+
   const handleCellEdited = (cell: any) => {
     const fieldName = cell.getField();
     const newValue = cell.getValue();
 
-    // if (fieldName === "height") {
-    //   if (+newValue > 200) {
-    //     cell.setValue(200);
-    //   }
-    // } else if (fieldName === "dob") {
-    //   const date = new Date(newValue);
-    //
-    //   if (isNaN(date.getTime())) {
-    //     cell.setValue("0000-00-00");
-    //   }
-    // } else {
-    //   cell.setValue(newValue);
-    // }
+    if (fieldName === "height") {
+      if (+newValue > 200) {
+        cell.setValue(200);
+      }
+    }
+
+    if (fieldName === "dob") {
+      const date = cell.getValue();
+      const dateTime = DateTime.fromISO(date);
+
+      if (dateTime.isValid) {
+        cell.setValue(dateTime.toISODate());
+      } else {
+        cell.setValue("0000-00-00");
+      }
+    }
+  };
+
+  const handleSorter = (
+    a: any,
+    b: any,
+    aRow: any,
+    bRow: any,
+    column: any,
+    dir: any,
+    sorterParams: any,
+  ) => {
+    const fieldName = column.getField();
+
+    if (fieldName === "name") {
+      const numA = parseInt(a.match(/\d+/)[0]);
+      const numB = parseInt(b.match(/\d+/)[0]);
+      return numA - numB;
+    }
   };
 
   return (
@@ -241,7 +268,7 @@ function App() {
         events={{
           rowClick: (e: any, row: any) => {},
           rowUpdated: (row: any) => {},
-          cellClick: (e: any, cell: any) => {},
+          cellClick: handleCellClicked,
           dataLoading: (data: any) => {},
           dataLoaded: (data: any) => {},
           dataProcessing: (data: any) => {},
@@ -257,6 +284,9 @@ function App() {
           rowDeleted: (row: any) => {},
           rowMoved: (row: any) => {},
           rowSelectionChanged: (data: any) => {},
+          dataSorting: (sorters: any) => {},
+          dataSorted: (sorters: any) => {},
+          sorter: handleSorter,
         }}
         footerElement={<span>Footer || </span>}
       />
