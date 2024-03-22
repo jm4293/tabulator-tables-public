@@ -81,7 +81,7 @@ const defaultColumns: ColumnDefinition[] = [
     headerFilter: "input",
   },
   {
-    title: "Age",
+    title: "Money",
     field: "age",
     // sorter: "number",
     hozAlign: "right",

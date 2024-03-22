@@ -175,11 +175,21 @@ footerElement={<span>Footer || </span>}
    1. rowAdded: 행이 추가될 때 발생하는 이벤트
    1. rowDeleted: 행이 삭제될 때 발생하는 이벤트
    1. rowMoved: 행이 이동될 때 발생하는 이벤트
-   1. rowSelectionchanged: 행 선택이 변경될 때 발생하는 이벤트
+   1. rowSelectionChanged: 행 선택이 변경될 때 발생하는 이벤트
    1. dataSorting: 데이터가 정렬되기 전에 발생하는 이벤트
    1. dataSorted: 데이터가 정렬된 후에 발생하는 이벤트
    1. sorter: 정렬기능을 사용할 때 정렬 방법을 지정하는 함수
 
 ## 6. footerElement
    * 테이블 하단에 표시될 커스텀 요소를 정의
+
+## 7. handleCellClicked
+   * 셀을 클릭했을 때 실행될 콜백 함수
+
+## 8. handleRowClicked
+    * 행을 클릭했을 때 실행될 콜백 함수
+
+## 9. handleSorter
+    * 정렬기능을 사용할 때 정렬 방법을 지정하는 함수
+
 
