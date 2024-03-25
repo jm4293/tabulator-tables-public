@@ -8,12 +8,13 @@ import {
   ReactTabulatorOptions,
 } from "react-tabulator";
 import { DateTime } from "luxon";
+import Select from "react-select/base";
+import { ReactSelect } from "./reactSelect";
 
-// interface 정의 시작
 interface dataInterface {
   id: number;
   name: string;
-  age: number;
+  money: number;
   gender: string;
   height: number;
   col: string;
@@ -30,13 +31,11 @@ interface colorOptionInterface {
   label: string;
   value: string;
 }
-// interface 정의 끝
 
-// defaultData, genderOptions, colorOptions, defaultColumns, options 정의 시작
 const defaultData: dataInterface[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   name: `Billy Bob ${i + 1 + Math.random() * 1000}`,
-  age: 12 + i,
+  money: 12 + i,
   gender: i % 2 === 0 ? "남자" : "여자",
   height: 95 + i,
   col:
@@ -57,10 +56,11 @@ const genderOptions: genderOptionInterface[] = [
 ];
 
 const colorOptions: colorOptionInterface[] = [
-  { label: "Red", value: "red" },
-  { label: "Green", value: "green" },
-  { label: "Blue", value: "blue" },
-  { label: "Yellow", value: "yellow" },
+  { label: "all", value: "" },
+  { label: "red", value: "red" },
+  { label: "green", value: "green" },
+  { label: "blue", value: "blue" },
+  { label: "yellow", value: "yellow" },
 ];
 
 const defaultColumns: ColumnDefinition[] = [
@@ -82,7 +82,7 @@ const defaultColumns: ColumnDefinition[] = [
   },
   {
     title: "Money",
-    field: "age",
+    field: "money",
     // sorter: "number",
     hozAlign: "right",
     editor: true,
@@ -99,7 +99,8 @@ const defaultColumns: ColumnDefinition[] = [
     title: "Gender",
     field: "gender",
     // sorter: "string",
-    headerFilter: "select",
+    // headerFilter: "select",
+    headerFilter: "autocomplete",
     headerFilterParams: {
       values: genderOptions,
     },
@@ -125,10 +126,27 @@ const defaultColumns: ColumnDefinition[] = [
   {
     title: "Favourite Color",
     field: "col",
-    sorter: "string",
-    headerFilter: "select",
+    // sorter: "string",
+    // headerFilter: "select",
+    headerFilter: "autocomplete",
     headerFilterParams: {
+      defaultValue: "",
       values: colorOptions,
+      // listItemFormatter: (value: any, title: any) => {
+      //   console.log("value", value);
+      //   console.log("title", title);
+      //   return value;
+      // },
+      // searchFunc: (value: any, searchTerm: any) => {
+      //   console.log("value", value);
+      //   console.log("searchTerm", searchTerm);
+      //   return value;
+      // },
+      freetext: true,
+      showListOnEmpty: false,
+      verticalNavigation: "hybrid",
+      searchingPlaceholder: "검색",
+      emptyPlaceholder: "데이터 없음",
     },
     editor: "select",
     editorParams: {
@@ -171,7 +189,6 @@ const options: ReactTabulatorOptions = {
   // paginationSize: 10,
   // paginationSizeSelector: [10, 20, 30],
 };
-// defaultData, genderOptions, colorOptions, defaultColumns, options 정의 끝
 
 function App() {
   let tableRef = useRef<any>();
@@ -182,7 +199,7 @@ function App() {
     const newRow: dataInterface = {
       id: data.length + 1,
       name: "",
-      age: 0,
+      money: 0,
       gender: "남자",
       height: 0,
       col: "",
@@ -218,6 +235,10 @@ function App() {
   const handleCellEdited = (cell: any) => {
     const fieldName = cell.getField();
     const newValue = cell.getValue();
+    const oldValue = cell.getOldValue();
+
+    console.log("fieldName", fieldName);
+    console.log("newValue", newValue);
 
     if (fieldName === "height") {
       if (+newValue > 200) {
@@ -232,7 +253,7 @@ function App() {
       if (dateTime.isValid) {
         cell.setValue(dateTime.toISODate());
       } else {
-        cell.setValue("0000-00-00");
+        cell.setValue(oldValue);
       }
     }
   };

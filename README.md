@@ -63,8 +63,8 @@ footerElement={<span>Footer || </span>}
          * symbolAfter: 통화 기호를 숫자 뒤에 표시할지 여부
          ```js
             {
-                title: "Age",
-                field: "age",
+                title: "Money",
+                field: "money",
                 // sorter: "number",
                 hozAlign: "right",
                 editor: true,
@@ -183,13 +183,26 @@ footerElement={<span>Footer || </span>}
 ## 6. footerElement
    * 테이블 하단에 표시될 커스텀 요소를 정의
 
-## 7. handleCellClicked
+## 7. handler
+   * 테이블의 이벤트를 처리하는 함수들을 정의
+
+   1. const fieldName = cell.getField()
+      * 셀의 필드 이름을 가져오는 함수
+   1. const newValue = cell.getValue()
+      * 셀의 새로운 값을 가져오는 함수
+   1. const oldValue = cell.getOldValue();
+      * 셀의 이전 값을 가져오는 함수
+   1. cell.setValue()
+      * 셀의 값을 설정하는 함수
+
+## 8. handleCellClicked
    * 셀을 클릭했을 때 실행될 콜백 함수
 
-## 8. handleRowClicked
-    * 행을 클릭했을 때 실행될 콜백 함수
+## 9. handleRowClicked
+   * 행을 클릭했을 때 실행될 콜백 함수
 
-## 9. handleSorter
-    * 정렬기능을 사용할 때 정렬 방법을 지정하는 함수
+## 10. handleSorter
+   * 정렬기능을 사용할 때 정렬 방법을 지정하는 함수
+
 
 
